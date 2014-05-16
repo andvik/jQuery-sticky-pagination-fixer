@@ -1,5 +1,16 @@
 # The Sticky Pagination Fixer
 
+##How to use
+Simply initialize the plugin on the header element. The plugin will only initialize on one element.
+<code>$('#your-header').stickyheader();</code>
+Optionally, you can adjust the scroll duration and "safety" (readAssistOffset) offset by passing them in as options.
+<code>
+$('#your-header').stickyheader({
+  readAssistOffset: 40,
+  duration: 250      
+});
+</code>
+
 ##Sticky headers are super annoying for spacebar paginators.
 	
 _Why?_
