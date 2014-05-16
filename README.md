@@ -1,13 +1,13 @@
 # The Sticky Pagination Fixer
 
 ##How to use
-Simply initialize the plugin on the header element. The plugin will only initialize on one element.
-<code>$('#your-header').stickyheader();</code>
+Simply initialize the plugin on the header element. The plugin will only initialize on one element.<br/>
+<code>$('#your-header').stickyheader();</code><br/>
 Optionally, you can adjust the scroll duration and "safety" (readAssistOffset) offset by passing them in as options.
 <code>
-$('#your-header').stickyheader({
-  readAssistOffset: 40,
-  duration: 250      
+$('#your-header').stickyheader({<br/>
+  readAssistOffset: 40,<br/>
+  duration: 250<br/>
 });
 </code>
 
