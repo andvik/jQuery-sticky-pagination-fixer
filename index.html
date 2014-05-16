@@ -24,6 +24,20 @@
 
 <div class="container">
 
+	<h2>
+		How to use
+	</h2>
+	<p>Simply initialize the plugin on the header element. The plugin will only initialize on one element.</p>
+	<pre>$('#your-header').stickyheader();</pre>
+	<p>Optionally, you can adjust the scroll duration and "safety" (readAssistOffset) offset by passing them in as options.</p>
+	<pre>
+$('#your-header').stickyheader({
+  readAssistOffset: 40,
+  duration: 250      
+});
+	</pre>
+
+
 	<h2>Sticky headers are super annoying for spacebar paginators.</h2>
 	
 	<p><i>Why?</i></p>
@@ -202,7 +216,12 @@
 	
 </div>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="sticky-pagination-fixer.js"></script>
   
+<script>
+	$('#sticky-header').stickyheader();
+</script>
+
 </body>
 </html>

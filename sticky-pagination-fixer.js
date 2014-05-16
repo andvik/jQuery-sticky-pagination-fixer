@@ -1,91 +1,69 @@
+; (function ($, w, undefined) {
+    var data_name = "stickyheader",
+        options = {
+            readAssistOffset: 40,   // screen height - this offset value = scroll distance
+            duration: 250           // scroll speed in ms
+        },
+        bound = false;
 
-var stickyItem = 'sticky-header';	// the ID of the fixed-position element
-var readAssistOffset = 40;			// screen height - this offset value = scroll distance
-var duration = 250;					// scroll speed in ms
-var doc = document.documentElement;
+    function StickyHeader(el, opts) {
+        this.el = $(el);
+        this.options = $.extend({}, options, opts);
+        this.enabled = true;
+        this.init();
+    }
 
-keydown = function (e) {
+    StickyHeader.prototype = {
+        constructor: StickyHeader,
+        init: function () {
+            var self = this;
+            $(window).bind('keydown', function (e) {
+                self.keydown.call(self, e);
+            });
+        },
+        enable: function () {
+            this.enabled = true;
+        },
+        disable: function () {
+            this.enabled = false;
+        },
+        keydown: function (e) {
+            var doc = document.documentElement,
+                stickyHeaderHeight,
+                currScrollPosition,
+                scrollToHere,
+                newViewportHeight;
 
-	var curElement = document.activeElement.nodeName;
+            if (this.enabled && ((e.keyCode === 32 && document.activeElement.nodeName === "BODY") || (e.keyCode === 33 || e.keyCode === 34))) {
 
-	if ((e.keyCode === 32 && curElement === "BODY") || (e.keyCode === 33 || e.keyCode === 34)) {
+                stickyHeaderHeight = this.el.outerHeight();
+                newViewportHeight = w.innerHeight - stickyHeaderHeight - this.options.readAssistOffset;
 
-		var viewportHeight = window.innerHeight;
-		var stickyHeaderHeight = document.getElementById(stickyItem).offsetHeight;
-		var newViewportHeight = viewportHeight - stickyHeaderHeight - readAssistOffset;
-	
-		e.preventDefault();
-		
-		if(e) {
-		
-			isShift = e.shiftKey || e.keyCode === 33 ? true : false;
-		
-		} else {
-			
-			isShift = window.event.shiftKey || e.keyCode === 33 ? true : false;
-			
-		};
-	
-		currScrollPosition = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-	
-		scrollToHere = newViewportHeight + currScrollPosition;
-	
-		if (isShift) {
-		
-			scrollToHere = currScrollPosition - newViewportHeight;
-		
-		}
-	
-		smoothScrollTo(scrollToHere)
-	
-	}
+                e.preventDefault();
 
-}
+                if (e) {
+                    scrollUp = e.shiftKey || e.keyCode === 33 ? true : false;
+                } else {
+                    scrollUp = window.event.shiftKey || e.keyCode === 33 ? true : false;
+                };
 
-window.smoothScrollTo = (function () {
+                currScrollPosition = $(window).scrollTop() - (doc.clientTop || 0);
+                scrollToHere = scrollUp ?  currScrollPosition - newViewportHeight : newViewportHeight + currScrollPosition;
+                
+                $('body').stop().animate({
+                    scrollTop: scrollToHere
+                }, this.options.duration);
+            }
+        }
+    }
 
-	var timer, start, factor;
+    $.fn.stickyheader = function (opts) {
+        if (!$(this).data(data_name) && !bound) {
+            $(this).data(data_name, new StickyHeader(this, opts));
+            bound = $(this).data(data_name);
+        }
+        return bound;
+    }
 
-	return function (target) {
+})(jQuery, window);
 
-		var offset = window.pageYOffset,
-			delta = target - window.pageYOffset;
-		
-		start = Date.now();
-
-		factor = 0;
-	
-		if( timer ) {
-
-			clearInterval(timer);
-
-		}
-	
-		function step() {
-
-			var y;
-
-			factor = (Date.now() - start) / duration;
-
-			if( factor >= 1 ) {
-
-				clearInterval(timer);
-				factor = 1;
-
-			} 
-
-			y = factor * delta + offset;
-
-			window.scrollBy(0, y - window.pageYOffset);
-
-		}
-	
-		timer = setInterval(step, 10);
-
-		return timer;
-
-	};
-
-}());
-
-window.onkeydown = keydown;
