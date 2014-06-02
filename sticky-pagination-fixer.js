@@ -49,8 +49,12 @@
 
                 currScrollPosition = $(window).scrollTop() - (doc.clientTop || 0);
                 scrollToHere = scrollUp ? currScrollPosition - newViewportHeight : newViewportHeight + currScrollPosition;
-
+/*
                 $('body').stop().animate({
+                    scrollTop: scrollToHere
+                }, this.options.duration).scrollTop(scrollToHere);
+*/
+                $('body,html').animate({
                     scrollTop: scrollToHere
                 }, this.options.duration);
             }
