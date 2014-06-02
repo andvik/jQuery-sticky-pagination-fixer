@@ -34,7 +34,7 @@
                 scrollToHere,
                 newViewportHeight;
 
-            if (((e.keyCode === 32 && document.activeElement.nodeName === "BODY") || (e.keyCode === 33 || e.keyCode === 34))) {
+            if (((e.keyCode === 32 && document.activeElement.nodeName != "INPUT") || (e.keyCode === 33 || e.keyCode === 34))) {
 
                 stickyHeaderHeight = this.el.outerHeight();
                 newViewportHeight = this.enabled ? w.innerHeight - stickyHeaderHeight - this.options.readAssistOffset : w.innerHeight - this.options.readAssistOffset;
@@ -49,11 +49,7 @@
 
                 currScrollPosition = $(window).scrollTop() - (doc.clientTop || 0);
                 scrollToHere = scrollUp ? currScrollPosition - newViewportHeight : newViewportHeight + currScrollPosition;
-/*
-                $('body').stop().animate({
-                    scrollTop: scrollToHere
-                }, this.options.duration).scrollTop(scrollToHere);
-*/
+
                 $('body,html').animate({
                     scrollTop: scrollToHere
                 }, this.options.duration);
